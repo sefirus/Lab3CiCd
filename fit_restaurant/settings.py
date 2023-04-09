@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'menu'
 ]
 
 MIDDLEWARE = [
@@ -74,9 +75,17 @@ WSGI_APPLICATION = 'fit_restaurant.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # }
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'neondb',
+        'USER': 'sashasam348',
+        'PASSWORD': 'gMhscexG8F7k',
+        'HOST': 'ep-shiny-fog-409161.eu-central-1.aws.neon.tech',
+        'PORT': '5432',
     }
 }
 
