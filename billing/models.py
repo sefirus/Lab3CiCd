@@ -4,10 +4,12 @@ import uuid
 
 class Table(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    number = models.IntegerField(default=0)
     name = models.CharField(max_length=255)
 
     def __str__(self):
         return self.name
+
 
 class Payment(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
