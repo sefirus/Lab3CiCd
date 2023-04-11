@@ -5,5 +5,6 @@ from billing import views
 
 app_name = 'billing'
 urlpatterns = [
-    path('', views.index, name='index')
+    path('', views.index, name='index_no_number'),
+    path('<int:table_number>/', views.index, name='index'),
 ]

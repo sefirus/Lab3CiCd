@@ -128,6 +128,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = ''
+STATICFILES_DIRS = 'D:/Repositories/Univ/CI-CD/Lab3/fit_restaurant/static/',
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
