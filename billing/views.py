@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 
 from billing.models import Table
+from orders.models import TableOrder
 
 
 # Create your views here.
@@ -20,4 +21,5 @@ def index(request, table_number=None):
     except Table.DoesNotExist:
         return redirect('billing:index_no_number')
 
-    return render(request, 'index.html', {'table': table})
+    table_order = TableOrder.objects.filter(table=table, status='accepted').first()
+    return render(request, 'index.html', {'table': table, 'table_order': table_order})
