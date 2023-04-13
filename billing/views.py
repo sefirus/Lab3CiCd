@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 
+from billing.forms import CallWaiterForm
 from billing.models import Table
 from orders.models import TableOrder
 
@@ -22,4 +23,13 @@ def index(request, table_number=None):
         return redirect('billing:index_no_number')
 
     table_order = TableOrder.objects.filter(table=table, status='accepted').first()
-    return render(request, 'index.html', {'table': table, 'table_order': table_order})
+    return render(request, 'index.html', {'table': table.number, 'table_order': table_order})
+
+
+def call_waiter(request):
+    if request.method == 'POST':
+        form = CallWaiterForm(request.POST)
+        if form.is_valid():
+            table_number = form.cleaned_data['table_number']
+            # ... rest of the view logic ...
+    return redirect('billing:index_no_number')

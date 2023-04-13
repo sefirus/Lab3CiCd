@@ -22,12 +22,19 @@
                     {% if not table_order %}opacity-50 cursor-not-allowed{% endif %}">
                         Checkout
                     </a>
-                    <a href="#" class="text-gray-600 hover:text-gray-800">Contact Us</a>
+                    <form action="{% url 'billing:call_waiter' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="table_number" value="{{ table }}">
+                        <button type="submit" class="text-gray-600 hover:text-gray-800">Call Waiter</button>
+                    </form>
                 </nav>
             {% else %}
                 <nav class="hidden md:flex space-x-4">
-                    <a href="#" class="text-gray-600 hover:text-gray-800">Contact Us</a>
-                </nav>
+                    <form action="{% url 'billing:call_waiter' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="table_number" value="{{ table }}">
+                        <button type="submit" class="text-gray-600 hover:text-gray-800">Call Waiter</button>
+                    </form>                </nav>
             {% endif %}
         </div>
     </header>
