@@ -5,6 +5,8 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 
 from django.shortcuts import render, redirect
+
+from orders.models import Notification
 from .forms import WaiterLoginForm
 from .models import Employee, Position
 
@@ -38,4 +40,8 @@ def waiter_login(request):
 
 @login_required
 def waiter_home(request):
-    return render(request, 'waiter_home.html')
+    if not request.user.is_authenticated or not hasattr(request.user, 'employee'):
+        return redirect('employees:waiter_login')
+
+    unassigned_notifications = Notification.objects.filter(target_waiter=None)
+    return render(request, 'waiter_home.html', {'unassigned_notifications': unassigned_notifications})

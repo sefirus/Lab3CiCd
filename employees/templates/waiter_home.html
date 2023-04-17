@@ -1,10 +1,18 @@
 {% extends 'base.html' %}
 
-{% block title %}Waiter Home{% endblock %}
-
 {% block content %}
-<div class="text-center mt-8">
-  <h1 class="text-4xl">Welcome, Waiter!</h1>
-  <p class="mt-4">This is your homepage.</p>
-</div>
+    <div class="flex justify-end">
+        <div class="w-1/3">
+            <div class="space-y-6 overflow-hidden" style="position: relative; max-height: 80vh; overflow-y: scroll; padding-bottom: 2rem; margin-bottom: 2rem;">
+                {% for notification in unassigned_notifications %}
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="font-bold text-xl mb-4">Table {{ notification.table.number }}</h3>
+                        <p>Customer is requesting a waiter.</p>
+                    </div>
+                {% endfor %}
+                <div style="content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2rem; background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));"></div>
+            </div>
+            <a href="{% url 'employees:waiter_home' %}" class="bg-blue-500 text-white px-4 py-2 rounded-md">Update Notifications</a>
+        </div>
+    </div>
 {% endblock %}
