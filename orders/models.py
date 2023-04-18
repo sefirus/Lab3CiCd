@@ -3,6 +3,7 @@ import uuid
 from menu.models import MenuItem  # Import MenuItem from the Menu app
 from billing.models import Table, Payment  # Import Table and Payment from the Billing app
 from employees.models import Employee  # Import Employee from the Employees app
+from django.utils import timezone
 
 
 class PersonDraft(models.Model):
@@ -55,3 +56,8 @@ class Notification(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     table = models.ForeignKey(Table, on_delete=models.CASCADE)
     target_waiter = models.ForeignKey(Employee, null=True, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(default=timezone.now)
+    is_cancelled = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ['-created_at']

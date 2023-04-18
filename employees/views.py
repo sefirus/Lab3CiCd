@@ -43,5 +43,5 @@ def waiter_home(request):
     if not request.user.is_authenticated or not hasattr(request.user, 'employee'):
         return redirect('employees:waiter_login')
 
-    unassigned_notifications = Notification.objects.filter(target_waiter=None)
+    unassigned_notifications = Notification.objects.filter(target_waiter=None, is_cancelled=False)
     return render(request, 'waiter_home.html', {'unassigned_notifications': unassigned_notifications})

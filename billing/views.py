@@ -32,11 +32,15 @@ def call_waiter(request):
         if form.is_valid():
             table_number = form.cleaned_data['table_number']
             try:
+                table_number = form.cleaned_data['table_number']
                 table = Table.objects.get(number=table_number)
-                notification = Notification(table=table)
-                notification.save()
 
-                # Redirect to the index page after creating the notification
+                # Cancel previous notifications for the table
+                Notification.objects.filter(table=table, is_cancelled=False).update(is_cancelled=True)
+
+                # Create a new notification
+                new_notification = Notification(table=table)
+                new_notification.save()
                 return redirect('billing:index', table_number=table.number)
 
             except Table.DoesNotExist:
