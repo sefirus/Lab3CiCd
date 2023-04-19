@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 
 from django.shortcuts import render, redirect
 
-from orders.models import Notification
+from orders.models import Notification, TableOrder
 from .forms import WaiterLoginForm
 from .models import Employee, Position
 
@@ -45,6 +45,7 @@ def is_waiter(user: User):
     else:
         return False
 
+
 @login_required
 @user_passes_test(is_waiter)
 def waiter_home(request):
@@ -54,7 +55,11 @@ def waiter_home(request):
     employee = request.user.employee
     unassigned_notifications = Notification.objects.filter(target_waiter=None, is_cancelled=False).order_by('-created_at')
     targeted_notifications = Notification.objects.filter(target_waiter=employee, is_cancelled=False).order_by('-created_at')
-    return render(request, 'waiter_home.html', {
+    not_closed_orders = TableOrder.objects.exclude(status='closed')
+    context = {
         'unassigned_notifications': unassigned_notifications,
         'targeted_notifications': targeted_notifications,
-    })
+        'not_closed_orders': not_closed_orders,
+    }
+
+    return render(request, 'waiter_home.html', context)
