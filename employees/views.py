@@ -2,7 +2,8 @@ import datetime
 import uuid
 
 from django.contrib.auth import login, authenticate
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.models import User
 
 from django.shortcuts import render, redirect
 
@@ -38,10 +39,22 @@ def waiter_login(request):
     return render(request, 'waiter_login.html', {'form': form})
 
 
+def is_waiter(user: User):
+    if user.employee:
+        return True
+    else:
+        return False
+
 @login_required
+@user_passes_test(is_waiter)
 def waiter_home(request):
     if not request.user.is_authenticated or not hasattr(request.user, 'employee'):
         return redirect('employees:waiter_login')
 
-    unassigned_notifications = Notification.objects.filter(target_waiter=None, is_cancelled=False)
-    return render(request, 'waiter_home.html', {'unassigned_notifications': unassigned_notifications})
+    employee = request.user.employee
+    unassigned_notifications = Notification.objects.filter(target_waiter=None, is_cancelled=False).order_by('-created_at')
+    targeted_notifications = Notification.objects.filter(target_waiter=employee, is_cancelled=False).order_by('-created_at')
+    return render(request, 'waiter_home.html', {
+        'unassigned_notifications': unassigned_notifications,
+        'targeted_notifications': targeted_notifications,
+    })
