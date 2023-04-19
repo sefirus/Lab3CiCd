@@ -30,16 +30,21 @@ def call_waiter(request):
     if request.method == 'POST':
         form = CallWaiterForm(request.POST)
         if form.is_valid():
-            table_number = form.cleaned_data['table_number']
             try:
                 table_number = form.cleaned_data['table_number']
                 table = Table.objects.get(number=table_number)
+
+                table_order = TableOrder.objects.filter(table=table, status='pending').first()
+                if table_order:
+                    target_waiter = table_order.waiter
+                else:
+                    target_waiter = None
 
                 # Cancel previous notifications for the table
                 Notification.objects.filter(table=table, is_cancelled=False).update(is_cancelled=True)
 
                 # Create a new notification
-                new_notification = Notification(table=table)
+                new_notification = Notification(table=table, target_waiter=target_waiter)
                 new_notification.save()
                 return redirect('billing:index', table_number=table.number)
 
