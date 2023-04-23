@@ -1,18 +1,19 @@
-import datetime
+from datetime import datetime, timedelta
 import uuid
 
 from django.contrib.auth import login, authenticate
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 
 from django.shortcuts import render, redirect
 
-from orders.models import Notification
+from orders.models import Notification, TableOrder
 from .forms import WaiterLoginForm
 from .models import Employee, Position
 
 
 def waiter_login(request):
+    request.hide_header_links = True
+    request.hide_call_waiter = True
     if request.method == 'POST':
         form = WaiterLoginForm(request, data=request.POST)
         if form.is_valid():
@@ -39,22 +40,31 @@ def waiter_login(request):
     return render(request, 'waiter_login.html', {'form': form})
 
 
-def is_waiter(user: User):
-    if user.employee:
-        return True
-    else:
-        return False
-
 @login_required
-@user_passes_test(is_waiter)
 def waiter_home(request):
+    request.hide_header_links = True
+    request.hide_call_waiter = True
+
     if not request.user.is_authenticated or not hasattr(request.user, 'employee'):
         return redirect('employees:waiter_login')
 
+    cutoff_time = datetime.now() - timedelta(hours=12)
     employee = request.user.employee
-    unassigned_notifications = Notification.objects.filter(target_waiter=None, is_cancelled=False).order_by('-created_at')
-    targeted_notifications = Notification.objects.filter(target_waiter=employee, is_cancelled=False).order_by('-created_at')
-    return render(request, 'waiter_home.html', {
+    unassigned_notifications = Notification.objects\
+        .filter(target_waiter=None,
+                is_cancelled=False,
+                created_at__gte=cutoff_time)\
+        .order_by('-created_at')
+    targeted_notifications = Notification.objects\
+        .filter(target_waiter=employee,
+                is_cancelled=False,
+                created_at__gte=cutoff_time)\
+        .order_by('-created_at')
+    not_closed_orders = TableOrder.objects.exclude(status='closed')
+    context = {
         'unassigned_notifications': unassigned_notifications,
         'targeted_notifications': targeted_notifications,
-    })
+        'not_closed_orders': not_closed_orders,
+    }
+
+    return render(request, 'waiter_home.html', context)

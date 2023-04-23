@@ -1,8 +1,0 @@
-header {
-  --header-height: 64px;
-  height: var(--header-height);
-}
-
-.min-h-screen-minus-header {
-  min-height: calc(100vh - var(--header-height));
-}
