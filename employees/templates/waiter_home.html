@@ -36,7 +36,10 @@
                  style="position: relative; max-height: 80vh; overflow-y: scroll; padding-bottom: 2rem; margin-bottom: 2rem;">
                 {% for order in not_closed_orders %}
                     <div class="bg-green-200 rounded-lg shadow-md p-6">
-                        <h3 class="font-bold text-xl mb-4">Table {{ order.table.number }}</h3>
+                        <a class="font-bold text-xl mb-4"
+                            href="{% url 'orders:table_order' order.id %}">
+                            Table {{ order.table.number }}
+                        </a>
                         <p>Status: {{ order.status }}</p>
                     </div>
                 {% endfor %}
