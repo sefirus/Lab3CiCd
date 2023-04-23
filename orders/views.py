@@ -5,6 +5,9 @@ from orders.forms import CreateTableOrderForm
 
 # Create your views here.
 def create_table_order(request):
+    request.hide_header_links = True
+    request.hide_call_waiter = True
+
     if request.method == 'POST':
         form = CreateTableOrderForm(request.POST)
         if form.is_valid():
