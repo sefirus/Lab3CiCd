@@ -1,8 +1,8 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseNotFound
+from django.http import HttpResponseNotFound, HttpResponseBadRequest
 from django.shortcuts import render, redirect, get_object_or_404
 
-from orders.forms import CreateTableOrderForm, PersonalOrderForm
+from orders.forms import CreateTableOrderForm, PersonalOrderForm, AddMenuItemForm
 from orders.models import TableOrder, PersonalOrder, PersonDraft
 
 
@@ -32,19 +32,23 @@ def table_order(request, table_order_id, personal_order_id=None):
     personal_orders = table_order.personal_orders.all()
 
     selected_personal_order = PersonalOrder.objects \
-        .values_list("items__price", flat=True) \
         .filter(id=personal_order_id) \
         .first()
 
     if not selected_personal_order:
         selected_personal_order = personal_orders.first() if personal_orders else None
 
-    selected_personal_order.total = sum([item.price for item in selected_personal_order.items.all()])
+    selected_menu_items = selected_personal_order.items.all() if selected_personal_order else []
+    total = sum([item.price for item in selected_menu_items])
+    add_menu_item_form = AddMenuItemForm()
 
     context = {
         'table_order': table_order,
         'personal_orders': personal_orders,
-        'selected_personal_order': selected_personal_order
+        'selected_personal_order': selected_personal_order,
+        'selected_menu_items': selected_menu_items,
+        'total': total,
+        'add_menu_item_form': add_menu_item_form,
     }
     return render(request, 'table_order.html', context)
 
@@ -77,3 +81,16 @@ def create_personal_order(request, table_order_id):
     else:
         # Return a 404 or any other appropriate response if the request method is not POST.
         return HttpResponseNotFound('Invalid request method')
+
+
+@login_required
+def add_menu_item(request, table_order_id, personal_order_id):
+    if request.method == 'POST':
+        form = AddMenuItemForm(request.POST)
+        if form.is_valid():
+            menu_item = form.cleaned_data['menu_item']
+            personal_order = get_object_or_404(PersonalOrder, id=personal_order_id)
+            personal_order.items.add(menu_item)
+            personal_order.save()
+            return redirect('orders:table_order', table_order_id=table_order_id, personal_order_id=personal_order_id)
+    return HttpResponseBadRequest('Invalid form submission')

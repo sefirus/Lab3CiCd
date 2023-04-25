@@ -1,6 +1,7 @@
 from django import forms
 
 from billing.models import Table
+from menu.models import MenuItem
 from .models import TableOrder, PersonalOrder
 
 
@@ -18,3 +19,7 @@ class PersonalOrderForm(forms.ModelForm):
     class Meta:
         model = PersonalOrder
         fields = ['table_order']
+
+
+class AddMenuItemForm(forms.Form):
+    menu_item = forms.ModelChoiceField(queryset=MenuItem.objects.all())
