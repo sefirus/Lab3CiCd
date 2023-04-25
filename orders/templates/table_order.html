@@ -20,8 +20,13 @@
         <div class="w-2/3">
             {% if selected_personal_order %}
                 <h3 class="text-xl font-bold mb-4">Personal Order Details</h3>
-                <p>Menu Items: {{ selected_personal_order.menu_items }}</p>
-                <p>Total Cost: {{ selected_personal_order.total }}</p>
+                <h3 class="text-xl font-bold">Menu Items</h3>
+                <ul class="list-disc list-inside">
+                    {% for menu_item in selected_menu_items %}
+                        <li>{{ menu_item.name }} - ${{ menu_item.price }}</li>
+                    {% endfor %}
+                </ul>
+                <p>Total Cost: {{ total }}</p>
                 <form action="{% url 'orders:add_menu_item' table_order.id selected_personal_order.id %}" method="post" class="flex items-center mb-4"> <!-- Add flex and items-center classes -->
                     {% csrf_token %}
                     <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Add to Order</button>

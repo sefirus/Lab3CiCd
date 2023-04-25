@@ -38,13 +38,16 @@ def table_order(request, table_order_id, personal_order_id=None):
     if not selected_personal_order:
         selected_personal_order = personal_orders.first() if personal_orders else None
 
-    selected_personal_order.total = sum([item.price for item in selected_personal_order.items.all()])
+    selected_menu_items = selected_personal_order.items.all() if selected_personal_order else []
+    total = sum([item.price for item in selected_menu_items])
     add_menu_item_form = AddMenuItemForm()
 
     context = {
         'table_order': table_order,
         'personal_orders': personal_orders,
         'selected_personal_order': selected_personal_order,
+        'selected_menu_items': selected_menu_items,
+        'total': total,
         'add_menu_item_form': add_menu_item_form,
     }
     return render(request, 'table_order.html', context)
