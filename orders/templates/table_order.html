@@ -16,6 +16,11 @@
             {% csrf_token %}
             <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Add Person</button>
         </form>
+        {% if table_order_has_non_empty_personal_orders %}
+            <div class="my-4">
+                <a href="{% url 'orders:checkout' table_order.id %}" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded">Checkout</a>
+            </div>
+        {% endif %}
         </div>
         <div class="w-2/3">
             {% if selected_personal_order %}

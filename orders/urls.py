@@ -12,5 +12,5 @@ urlpatterns = [
          name='create_personal_order'),
     path('table_order/<uuid:table_order_id>/<uuid:personal_order_id>/add_menu_item/', views.add_menu_item,
          name='add_menu_item'),
-
+    path('table_order/<uuid:table_order_id>/checkout/', views.waiter_checkout, name='checkout'),
 ]

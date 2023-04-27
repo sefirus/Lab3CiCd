@@ -42,6 +42,8 @@ def table_order(request, table_order_id, personal_order_id=None):
     total = sum([item.price for item in selected_menu_items])
     add_menu_item_form = AddMenuItemForm()
 
+    table_order_has_non_empty_personal_orders = table_order.personal_orders.filter(total__gt=0).exists()
+
     context = {
         'table_order': table_order,
         'personal_orders': personal_orders,
@@ -49,6 +51,7 @@ def table_order(request, table_order_id, personal_order_id=None):
         'selected_menu_items': selected_menu_items,
         'total': total,
         'add_menu_item_form': add_menu_item_form,
+        'table_order_has_non_empty_personal_orders': table_order_has_non_empty_personal_orders
     }
     return render(request, 'table_order.html', context)
 
@@ -91,6 +94,14 @@ def add_menu_item(request, table_order_id, personal_order_id):
             menu_item = form.cleaned_data['menu_item']
             personal_order = get_object_or_404(PersonalOrder, id=personal_order_id)
             personal_order.items.add(menu_item)
+            personal_order.total = sum([item.price for item in personal_order.items.all()])
             personal_order.save()
             return redirect('orders:table_order', table_order_id=table_order_id, personal_order_id=personal_order_id)
     return HttpResponseBadRequest('Invalid form submission')
+
+
+@login_required
+def waiter_checkout(request, table_order_id):
+    table_order = get_object_or_404(TableOrder, id=table_order_id)
+    personal_orders = table_order.personal_orders.filter(total__gt=0)
+    return render(request, 'waiter_checkout.html', {'table_order': table_order, 'personal_orders': personal_orders})
