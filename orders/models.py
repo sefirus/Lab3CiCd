@@ -43,6 +43,7 @@ class GroupOrder(models.Model):
 class TableOrder(models.Model):
     STATUS_CHOICES = [
         ('pending', 'Pending'),
+        ('checkout in progress', 'Checkout In Progress'),
         ('accepted', 'Accepted'),
         ('closed', 'Closed'),
     ]
@@ -50,7 +51,7 @@ class TableOrder(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     table = models.ForeignKey(Table, on_delete=models.CASCADE)
     waiter = models.ForeignKey(Employee, on_delete=models.CASCADE)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
+    status = models.CharField(max_length=25, choices=STATUS_CHOICES, default='Pending')
 
 
 class Notification(models.Model):

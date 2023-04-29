@@ -140,6 +140,18 @@ def create_group_order(request, table_order_id):
             group_order.personal_orders.add(po)
             po.save()
 
+        table_order.status = 'Checkout In Progress'
+        table_order.save()
+
         return redirect('orders:checkout', table_order_id=table_order_id)
 
     return render(request, 'waiter_checkout.html', {'table_order': table_order})
+
+
+@login_required
+def finish_checkout(request, table_order_id):
+    table_order = get_object_or_404(TableOrder, id=table_order_id)
+    table_order.status = 'Accepted'
+    table_order.save()
+
+    return redirect('employees:waiter_home')

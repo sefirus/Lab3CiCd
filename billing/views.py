@@ -34,7 +34,7 @@ def call_waiter(request):
                 table_number = form.cleaned_data['table_number']
                 table = Table.objects.get(number=table_number)
 
-                table_order = TableOrder.objects.filter(table=table, status='pending').first()
+                table_order = TableOrder.objects.filter(table=table, status='Pending').first()
                 if table_order:
                     target_waiter = table_order.waiter
                 else:
