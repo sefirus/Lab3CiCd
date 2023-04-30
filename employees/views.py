@@ -60,7 +60,7 @@ def waiter_home(request):
                 is_cancelled=False,
                 created_at__gte=cutoff_time)\
         .order_by('-created_at')
-    not_closed_orders = TableOrder.objects.exclude(status='closed')
+    not_closed_orders = TableOrder.objects.exclude(status='Closed')
     context = {
         'unassigned_notifications': unassigned_notifications,
         'targeted_notifications': targeted_notifications,

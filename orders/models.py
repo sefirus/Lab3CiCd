@@ -54,9 +54,9 @@ class TableOrder(models.Model):
     table = models.ForeignKey(Table, on_delete=models.CASCADE, related_name='table_orders')
     waiter = models.ForeignKey(Employee, on_delete=models.CASCADE)
     status = models.CharField(max_length=25, choices=STATUS_CHOICES, default='Pending')
-    pending_date_time = models.DateTimeField(default=datetime.now(timezone.utc))
-    accepted_date_time = models.DateTimeField(default=datetime.now(timezone.utc))
-    closed_date_time = models.DateTimeField(default=datetime.now(timezone.utc))
+    pending_date_time = models.DateTimeField(auto_now_add=True)
+    accepted_date_time = models.DateTimeField(auto_now_add=True)
+    closed_date_time = models.DateTimeField(auto_now_add=True)
 
 
 class Notification(models.Model):
