@@ -5,7 +5,7 @@
     <h2 class="text-2xl font-bold mb-4">Checkout</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {% for group_order in unpaid_group_orders %}
-            <div class="border border-gray-300 p-4 mb-4 rounded-md">
+            <a href="{% url 'billing:payment' group_order.id %}" class="border border-gray-300 p-4 mb-4 rounded-md">
                 {% for personal_order in group_order.personal_orders.all %}
                     <div class="mb-2">
                         <span class="font-semibold">Person {{ forloop.counter }} - </span>
@@ -29,7 +29,7 @@
                 <div class="font-semibold text-xl">
                     Order Total - {{ group_order.total }}
                 </div>
-            </div>
+            </a>
         {% endfor %}
     </div>
   </div>
