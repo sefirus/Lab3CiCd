@@ -58,11 +58,14 @@ def call_waiter(request):
 
 
 def client_checkout(request, table_number):
+    request.hide_header_links = True
     table = get_object_or_404(Table,  number=table_number)
     table_order = TableOrder.objects.filter(table=table, status='Accepted').first()
 
     if table_order:
-        unpaid_group_orders = GroupOrder.objects.filter(table_order=table_order, payment=None)
+        unpaid_group_orders = GroupOrder.objects.prefetch_related('personal_orders__items').filter(table_order=table_order, payment=None)
+        for group_order in unpaid_group_orders:
+            group_order.total = sum(po.total for po in group_order.personal_orders.all())
     else:
         return redirect('billing:index', table_number)
 
