@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseNotFound, HttpResponseBadRequest
 from django.shortcuts import render, redirect, get_object_or_404
 
+from billing.models import Table
 from orders.forms import CreateTableOrderForm, PersonalOrderForm, AddMenuItemForm
 from orders.models import TableOrder, PersonalOrder, PersonDraft, GroupOrder
 
