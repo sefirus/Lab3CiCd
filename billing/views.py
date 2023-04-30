@@ -1,8 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from billing.forms import CallWaiterForm
 from billing.models import Table
-from orders.models import TableOrder, Notification
+from orders.models import TableOrder, Notification, GroupOrder
 
 
 # Create your views here.
@@ -22,8 +22,12 @@ def index(request, table_number=None):
     except Table.DoesNotExist:
         return redirect('billing:index_no_number')
 
-    table_order = TableOrder.objects.filter(table=table, status='accepted').first()
-    return render(request, 'index.html', {'table': table.number, 'table_order': table_order})
+    table_order = TableOrder.objects.filter(table=table, status='Accepted').first()
+    context = {
+        'table': table.number,
+        'table_order': table_order
+    }
+    return render(request, 'index.html', context)
 
 
 def call_waiter(request):
@@ -51,3 +55,15 @@ def call_waiter(request):
             except Table.DoesNotExist:
                 form.add_error(None, 'Invalid table number.')
     return redirect('billing:index_no_number')
+
+
+def client_checkout(request, table_number):
+    table = get_object_or_404(Table,  number=table_number)
+    table_order = TableOrder.objects.filter(table=table, status='Accepted').first()
+
+    if table_order:
+        unpaid_group_orders = GroupOrder.objects.filter(table_order=table_order, payment=None)
+    else:
+        return redirect('billing:index', table_number)
+
+    return render(request, 'client_checkout.html', {'unpaid_group_orders': unpaid_group_orders})
