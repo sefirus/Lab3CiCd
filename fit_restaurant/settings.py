@@ -90,6 +90,10 @@ DATABASES = {
         'PASSWORD': 'gMhscexG8F7k',
         'HOST': 'ep-shiny-fog-409161.eu-central-1.aws.neon.tech',
         'PORT': '5432',
+        'OPTIONS': {
+            'sslmode': 'require',
+            'options': 'project=ep-shiny-fog-409161'
+        },
     }
 }
 
