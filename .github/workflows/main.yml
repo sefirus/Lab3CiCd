@@ -25,4 +25,4 @@ jobs:
         docker-compose up -d
 
     - name: Run tests
-      run: docker-compose run web python manage.py test
+      run: docker-compose run web pytest
