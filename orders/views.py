@@ -114,7 +114,7 @@ def waiter_checkout(request, table_order_id):
         title = ''
         for po in personal_orders:
             related_items.extend(po.items.all())
-            title += po.person1.title + ' '
+            title += po.person.title + ' '
         group_order.total = sum([item.price for item in related_items])
         group_order.title = title
 

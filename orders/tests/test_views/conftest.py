@@ -46,3 +46,8 @@ def employee(db) -> Employee:
 def person_1(db) -> PersonDraft:
     person1 = PersonDraft.objects.create(title='Person 1')
     return person1
+
+@pytest.fixture(scope='session')
+def django_db_setup():
+    from fit_restaurant import settings
+    settings.DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3', 'ATOMIC_REQUESTS': True}
