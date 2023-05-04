@@ -1,5 +1,4 @@
 import pytest
-import uuid
 from django.test import Client
 from django.urls import reverse
 
