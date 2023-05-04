@@ -5,8 +5,15 @@ from django.contrib.auth.models import User
 
 from billing.models import Table
 from employees.models import Employee, Position
+from menu.models import MenuItem, Category
 from orders.models import TableOrder, PersonDraft
 from django.test import Client
+
+
+@pytest.fixture(scope='session')
+def django_db_setup():
+    from fit_restaurant import settings
+    settings.DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3', 'ATOMIC_REQUESTS': True}
 
 
 @pytest.fixture(autouse=True)
@@ -47,7 +54,41 @@ def person_1(db) -> PersonDraft:
     person1 = PersonDraft.objects.create(title='Person 1')
     return person1
 
-@pytest.fixture(scope='session')
-def django_db_setup():
-    from fit_restaurant import settings
-    settings.DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3', 'ATOMIC_REQUESTS': True}
+@pytest.fixture(autouse=True)
+def person_2(db) -> PersonDraft:
+    person2 = PersonDraft.objects.create(title='Person 2')
+    return person2
+
+
+@pytest.fixture(autouse=True)
+def person_3(db) -> PersonDraft:
+    person3 = PersonDraft.objects.create(title='Person 3')
+    return person3
+
+
+@pytest.fixture(autouse=True)
+def category(db) -> Category:
+    category = Category.objects.create(name='Category 1')
+    return category
+
+
+@pytest.fixture(autouse=True)
+def menu_item_1(db, category) -> MenuItem:
+    menu_item = MenuItem.objects.create(name='Item 1', price=10, total_weight_grams=100, total_calories=20,
+                                        is_prohibited=False, category=category)
+    return menu_item
+
+
+@pytest.fixture(autouse=True)
+def menu_item_2(db, category) -> MenuItem:
+    menu_item = MenuItem.objects.create(name='Item 2', price=15, total_weight_grams=100, total_calories=15,
+                                        is_prohibited=False, category=category)
+    return menu_item
+
+
+@pytest.fixture(autouse=True)
+def menu_item_3(db, category) -> MenuItem:
+    menu_item = MenuItem.objects.create(name='Item 3', price=20, total_weight_grams=100, total_calories=25,
+                                        is_prohibited=False, category=category)
+    return menu_item
+

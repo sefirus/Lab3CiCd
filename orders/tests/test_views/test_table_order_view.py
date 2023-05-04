@@ -32,3 +32,33 @@ def test_table_order_get_one_empty_po(client: Client, table_order, person_1):
     assert table_order_has_non_empty_personal_orders is False
     assert len(personal_orders) == 1
 
+
+@pytest.mark.django_db
+def test_table_order_get_multiple_personal_orders(client: Client, table_order, person_1, person_2, person_3,
+                                                  menu_item_1, menu_item_2, menu_item_3):
+    po1 = PersonalOrder.objects.create(table_order=table_order, person=person_1,
+                                       total=menu_item_1.price + menu_item_2.price + menu_item_3.price)
+    po1.items.set([menu_item_1, menu_item_2, menu_item_3])
+
+    po2 = PersonalOrder.objects.create(table_order=table_order, person=person_2,
+                                       total=menu_item_1.price + menu_item_3.price)
+    po2.items.set([menu_item_1, menu_item_3])
+
+    po3 = PersonalOrder.objects.create(table_order=table_order, person=person_3,
+                                       total=menu_item_2.price + menu_item_3.price)
+    po3.items.set([menu_item_2, menu_item_3])
+
+    table_order.personal_orders.set([po1, po2, po3])
+
+    path = reverse('orders:table_order', args=[table_order.id, po1.id])
+    response = client.get(path)
+
+    assert response.status_code == 200
+    assert response.context['selected_personal_order'] == po1
+    assert response.context['total'] == po1.total
+
+    selected_menu_items = response.context['selected_menu_items']
+    assert len(selected_menu_items) == 3
+    assert menu_item_1 in selected_menu_items
+    assert menu_item_2 in selected_menu_items
+    assert menu_item_3 in selected_menu_items
