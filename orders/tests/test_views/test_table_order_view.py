@@ -30,7 +30,7 @@ def test_table_order_get_one_empty_po(client: Client, table_order, person_1):
     assert total == 0
     assert table_order_response.id == table_order.id
     assert table_order_has_non_empty_personal_orders is False
-    assert len(personal_orders) == 1
+    assert len(personal_orders) == len(table_order.personal_orders.all())
 
 
 @pytest.mark.django_db

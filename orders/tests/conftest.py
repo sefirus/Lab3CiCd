@@ -111,3 +111,32 @@ def group_order_1(table_order) -> GroupOrder:
     group_order = GroupOrder.objects.create(table_order=table_order)
     return group_order
 
+@pytest.fixture(autouse=True)
+def personal_order_3(db, table_order, person_3) -> PersonalOrder:
+    personal_order = PersonalOrder.objects.create(table_order=table_order, person=person_3, total=0)
+    return personal_order
+
+@pytest.fixture(autouse=True)
+def personal_order_4(db, table_order, person_4) -> PersonalOrder:
+    personal_order = PersonalOrder.objects.create(table_order=table_order, person=person_4, total=0)
+    return personal_order
+
+@pytest.fixture(autouse=True)
+def personal_order_5(db, table_order, person_5) -> PersonalOrder:
+    personal_order = PersonalOrder.objects.create(table_order=table_order, person=person_5, total=0)
+    return personal_order
+
+@pytest.fixture(autouse=True)
+def person_3(db) -> PersonDraft:
+    person3 = PersonDraft.objects.create(title='Person 3')
+    return person3
+
+@pytest.fixture(autouse=True)
+def person_4(db) -> PersonDraft:
+    person4 = PersonDraft.objects.create(title='Person 4')
+    return person4
+
+@pytest.fixture(autouse=True)
+def person_5(db) -> PersonDraft:
+    person5 = PersonDraft.objects.create(title='Person 5')
+    return person5
