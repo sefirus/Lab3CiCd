@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from billing.models import Table
 from employees.models import Employee, Position
 from menu.models import MenuItem, Category
-from orders.models import TableOrder, PersonDraft
+from orders.models import TableOrder, PersonDraft, PersonalOrder, GroupOrder
 from django.test import Client
 
 
@@ -54,6 +54,7 @@ def person_1(db) -> PersonDraft:
     person1 = PersonDraft.objects.create(title='Person 1')
     return person1
 
+
 @pytest.fixture(autouse=True)
 def person_2(db) -> PersonDraft:
     person2 = PersonDraft.objects.create(title='Person 2')
@@ -91,4 +92,22 @@ def menu_item_3(db, category) -> MenuItem:
     menu_item = MenuItem.objects.create(name='Item 3', price=20, total_weight_grams=100, total_calories=25,
                                         is_prohibited=False, category=category)
     return menu_item
+
+
+@pytest.fixture
+def personal_order_1(table_order, person_1) -> PersonalOrder:
+    personal_order = PersonalOrder.objects.create(table_order=table_order, person=person_1, total=0)
+    return personal_order
+
+
+@pytest.fixture
+def personal_order_2(table_order, person_2) -> PersonalOrder:
+    personal_order = PersonalOrder.objects.create(table_order=table_order, person=person_2, total=0)
+    return personal_order
+
+
+@pytest.fixture
+def group_order_1(table_order) -> GroupOrder:
+    group_order = GroupOrder.objects.create(table_order=table_order)
+    return group_order
 
