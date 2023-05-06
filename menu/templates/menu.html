@@ -8,6 +8,20 @@
                     <h2 class="text-xl mb-4">Filters</h2>
                     <form action="{% url 'menu:menu' %}" method="post">
                         {% csrf_token %}
+                        <div class="flex">
+                            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mr-2">Apply Filters</button>
+                            <form action="{% url 'menu:menu' %}" method="get" class="mt-2">
+                                <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">Clear Filters</button>
+                            </form>
+                        </div>
+                        <div class="mb-4">
+                            {{ form.min_price.label_tag }}<br>
+                            {{ form.min_price }}
+                        </div>
+                        <div class="mb-4">
+                            {{ form.max_price.label_tag }}<br>
+                            {{ form.max_price }}
+                        </div>
                         <div class="mb-4">
                             {{ form.category.label_tag }}<br>
                             {{ form.category }}
@@ -16,7 +30,10 @@
                             {{ form.subcategory.label_tag }}<br>
                             {{ form.subcategory }}
                         </div>
-                        <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Apply Filters</button>
+                        <div class="mb-4">
+                            {{ form.tags.label_tag }}<br>
+                            {{ form.tags }}
+                        </div>
                     </form>
                 </div>
                 <div class="col-span-3">
