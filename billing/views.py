@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from billing.forms import CallWaiterForm
 from billing.models import Table
 from orders.models import TableOrder, Notification
+from menu.models import MenuItem, Category
 
 
 # Create your views here.
@@ -24,6 +25,9 @@ def index(request, table_number=None):
 
     table_order = TableOrder.objects.filter(table=table, status='accepted').first()
     return render(request, 'index.html', {'table': table.number, 'table_order': table_order})
+
+
+
 
 
 def call_waiter(request):
@@ -51,3 +55,7 @@ def call_waiter(request):
             except Table.DoesNotExist:
                 form.add_error(None, 'Invalid table number.')
     return redirect('billing:index_no_number')
+def menu(request):
+    items = MenuItem.objects.filter(is_prohibited=False)
+    categories = Category.objects.all()
+    return render(request, 'index.html', {'categories': categories, 'items': items, })
