@@ -7,4 +7,4 @@ from menu.models import MenuItem, Category
 def menu(request):
     items = MenuItem.objects.filter(is_prohibited=False)
     categories = Category.objects.all()
-    return render(request, 'index.html', {'categories': categories, 'items': items, })
+    return render(request, 'menu.html', {'categories': categories, 'items': items, })

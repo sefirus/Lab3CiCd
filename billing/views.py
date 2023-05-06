@@ -56,10 +56,6 @@ def call_waiter(request):
             except Table.DoesNotExist:
                 form.add_error(None, 'Invalid table number.')
     return redirect('billing:index_no_number')
-def menu(request):
-    items = MenuItem.objects.filter(is_prohibited=False)
-    categories = Category.objects.all()
-    return render(request, 'index.html', {'categories': categories, 'items': items, })
 
 
 def client_checkout(request, table_number):
