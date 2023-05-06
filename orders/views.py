@@ -134,6 +134,9 @@ def create_group_order(request, table_order_id):
         selected_personal_orders = request.POST.getlist('personal_orders')
         personal_orders = [get_object_or_404(PersonalOrder, id=po_id) for po_id in selected_personal_orders]
 
+        if len(personal_orders) < 1:
+            return redirect('orders:checkout', table_order_id=table_order_id)
+
         group_order = GroupOrder(table_order=table_order)
         group_order.save()
 
