@@ -1,0 +1,24 @@
+{% extends 'billing/base.html' %}
+
+{% block content %}
+    {% with hide_header_links=True table_order=table_order table_number=table %}
+        <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+            <div class="grid grid-cols-3 gap-3">
+                {% for item in items %}
+                    <div>
+                        <a href="#">
+                            <div>
+                                <img src="{{item.photos.url }}" class="rounded-t-xl">
+                            </div>
+                            <div class="p-6 bg-white rounded-b-xl">
+                                <h2 class="text-2xl">{{item.name}}</h2>
+                                <p class="text-gray-500">Price: {{item.price}}</p>
+                            </div>
+
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endwith %}
+{% endblock %}
