@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2 class="text-2xl font-bold mb-4">Payment for Group Order</h2>
+    {% for personal_order in group_order.personal_orders.all %}
+        <div class="mb-2">
+            <span class="font-semibold">Person {{ forloop.counter }} - </span>
+            {% for menu_item in personal_order.items.all %}
+                <span>{{ menu_item.name }}{% if not forloop.last %}, {% endif %}</span>
+            {% endfor %}
+        </div>
+        <div class="mb-4">
+            <span class="font-semibold">Total - </span>
+            <span>{{ personal_order.total }}</span>
+        </div>
+        {% if not forloop.last %}
+            <div class="border-b border-gray-300 mb-4 max-w-prose"></div>
+        {% endif %}
+    {% endfor %}
+    <h3>Order Total - {{ group_order.total }}</h3>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Pay</button>
+    </form>
+{% endblock %}

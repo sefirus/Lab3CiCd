@@ -1,0 +1,6 @@
+psycopg2==2.9.6
+Django==4.2
+Pillow==9.5.0
+uuid~=1.30
+pytest~=7.3.1
+pytest-django~=4.5.2

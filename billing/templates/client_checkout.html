@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="w-full max-w-4xl mx-auto mt-6">
+    <h2 class="text-2xl font-bold mb-4">Checkout</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for group_order in unpaid_group_orders %}
+            <a href="{% url 'billing:payment' group_order.id %}" class="border border-gray-300 p-4 mb-4 rounded-md">
+                {% for personal_order in group_order.personal_orders.all %}
+                    <div class="mb-2">
+                        <span class="font-semibold">Person {{ forloop.counter }} - </span>
+                        {% with personal_order.items.all|slice:":3" as truncated_menu_items %}
+                            {% for menu_item in truncated_menu_items %}
+                                <span>{{ menu_item.name }}{% if not forloop.last %}, {% endif %}</span>
+                            {% endfor %}
+                            {% if personal_order.menu_items.count > 3 %}
+                                <span>...</span>
+                            {% endif %}
+                        {% endwith %}
+                    </div>
+                    <div class="mb-4">
+                        <span class="font-semibold">Total - </span>
+                        <span>{{ personal_order.total }}</span>
+                    </div>
+                    {% if not forloop.last %}
+                        <div class="border-b border-gray-300 mb-4"></div>
+                    {% endif %}
+                {% endfor %}
+                <div class="font-semibold text-xl">
+                    Order Total - {{ group_order.total }}
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+  </div>
+{% endblock %}

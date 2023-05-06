@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import sys
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -90,6 +90,10 @@ DATABASES = {
         'PASSWORD': 'gMhscexG8F7k',
         'HOST': 'ep-shiny-fog-409161.eu-central-1.aws.neon.tech',
         'PORT': '5432',
+        'OPTIONS': {
+            'sslmode': 'require',
+            'options': 'project=ep-shiny-fog-409161'
+        },
     }
 }
 
