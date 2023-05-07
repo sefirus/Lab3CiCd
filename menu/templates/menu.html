@@ -4,37 +4,38 @@
     {% with hide_header_links=True table_order=table_order table_number=table %}
         <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
             <div class="grid grid-cols-4 gap-3">
-                <div class="col-span-1">
+                <div class="flex-row">
                     <h2 class="text-xl mb-4">Filters</h2>
-                    <form action="{% url 'menu:menu' %}" method="post">
-                        {% csrf_token %}
-                        <div class="flex">
-                            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mr-2">Apply Filters</button>
-                            <form action="{% url 'menu:menu' %}" method="get" class="mt-2">
-                                <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">Clear Filters</button>
-                            </form>
-                        </div>
-                        <div class="mb-4">
-                            {{ form.min_price.label_tag }}<br>
-                            {{ form.min_price }}
-                        </div>
-                        <div class="mb-4">
-                            {{ form.max_price.label_tag }}<br>
-                            {{ form.max_price }}
-                        </div>
-                        <div class="mb-4">
-                            {{ form.category.label_tag }}<br>
-                            {{ form.category }}
-                        </div>
-                        <div class="mb-4">
-                            {{ form.subcategory.label_tag }}<br>
-                            {{ form.subcategory }}
-                        </div>
-                        <div class="mb-4">
-                            {{ form.tags.label_tag }}<br>
-                            {{ form.tags }}
-                        </div>
-                    </form>
+                    <div class="flex mb-4">
+                        <form action="{% url 'menu:menu' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mr-2">Apply</button>
+                            <div class="mb-4">
+                                {{ form.min_price.label_tag }}<br>
+                                {{ form.min_price }}
+                            </div>
+                            <div class="mb-4">
+                                {{ form.max_price.label_tag }}<br>
+                                {{ form.max_price }}
+                            </div>
+                            <div class="mb-4">
+                                {{ form.category.label_tag }}<br>
+                                {{ form.category }}
+                            </div>
+                            <div class="mb-4">
+                                {{ form.subcategory.label_tag }}<br>
+                                {{ form.subcategory }}
+                            </div>
+                            <div class="mb-4">
+                                {{ form.tags.label_tag }}<br>
+                                {{ form.tags }}
+                            </div>
+                        </form>
+                        <form action="{% url 'menu:menu' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">Clear</button>
+                        </form>
+                    </div>
                 </div>
                 <div class="col-span-3">
                     <div class="grid grid-cols-3 gap-3">
