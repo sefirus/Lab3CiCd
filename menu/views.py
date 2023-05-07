@@ -36,6 +36,10 @@ def menu(request):
 
             if max_price:
                 items = items.filter(price__lte=max_price)
+        for item in items:
+            item.main_photo_path = item.photos.first().path
+            item.main_photo = item.photos.first()
+            print(item.main_photo_path)
     else:
         form = MenuFilterForm()
 
