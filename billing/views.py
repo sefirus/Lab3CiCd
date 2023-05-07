@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from billing.forms import CallWaiterForm, PaymentForm
 from billing.models import Table
+from menu.models import MenuItem, Category
 from orders.models import TableOrder, Notification, GroupOrder
 
 

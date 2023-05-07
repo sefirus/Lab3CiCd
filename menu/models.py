@@ -8,7 +8,8 @@ class Category(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255)
     parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='children')
-
+    class Meta:
+        verbose_name_plural = 'Categories'
     def __str__(self):
         return self.name
 
@@ -56,6 +57,10 @@ class MenuItem(models.Model):
     tags = models.ManyToManyField(Tags, through='MenuItemsTags', related_name='menu_items')
     photos = models.ManyToManyField(Photo, related_name='menu_items')
     ingredients = models.ManyToManyField(Ingredient, related_name='menu_items')
+
+    @property
+    def main_photo(self):
+        return self.photos.first()
 
     def __str__(self):
         return self.name
