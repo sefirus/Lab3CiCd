@@ -58,6 +58,10 @@ class MenuItem(models.Model):
     photos = models.ManyToManyField(Photo, related_name='menu_items')
     ingredients = models.ManyToManyField(Ingredient, related_name='menu_items')
 
+    @property
+    def main_photo(self):
+        return self.photos.first()
+
     def __str__(self):
         return self.name
 

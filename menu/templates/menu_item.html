@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container mx-auto mt-6 px-6 pb-12 bg-gray-100 rounded-xl">
+        <div class="grid grid-cols-2 gap-6">
+            <div class="flex justify-center items-center">
+                <img src="{{ item.main_photo.path.url }}" class="rounded-lg shadow-md" alt="{{ item.name }}">
+            </div>
+            <div>
+                <h1 class="text-3xl mb-4">{{ item.name }}</h1>
+                <p class="text-xl text-gray-600 mb-4">Price: {{ item.price }}</p>
+                <h2 class="text-2xl mb-2">Description</h2>
+                <span>{{ item.description }}</span>
+                <h2 class="text-2xl mb-2">Ingredients:</h2>
+                <ul class="list-disc list-inside text-gray-600">
+                    {% for ingredient in item.ingredients.all %}
+                        <li>{{ ingredient.name }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

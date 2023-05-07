@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from menu.forms import MenuFilterForm
 from menu.models import MenuItem, Category
@@ -36,11 +36,12 @@ def menu(request):
 
             if max_price:
                 items = items.filter(price__lte=max_price)
-        for item in items:
-            item.main_photo_path = item.photos.first().path
-            item.main_photo = item.photos.first()
-            print(item.main_photo_path)
     else:
         form = MenuFilterForm()
 
     return render(request, 'menu.html', {'categories': categories, 'items': items, 'form': form})
+
+
+def menu_item(request, item_id):
+    item = get_object_or_404(MenuItem, pk=item_id)
+    return render(request, 'menu_item.html', {'item': item})

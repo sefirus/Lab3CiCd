@@ -7,4 +7,5 @@ from menu import views
 app_name = 'menu'
 urlpatterns = [
     path('', views.menu, name='menu'),
+    path('item/<uuid:item_id>/', views.menu_item, name='menu_item'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
