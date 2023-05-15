@@ -1,1 +1,1 @@
-web: gunicorn fit_restaurant.wsgi
+web: gunicorn myapp:app
