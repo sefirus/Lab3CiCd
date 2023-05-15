@@ -28,7 +28,7 @@ jobs:
       run: docker-compose run web pytest
 
   custom-deploy:
-    needs: build
+    needs: build_and_test
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
