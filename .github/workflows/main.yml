@@ -27,8 +27,7 @@ jobs:
     - name: Run tests
       run: docker-compose run web pytest
 
-
-custom-deploy:
+  custom-deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
