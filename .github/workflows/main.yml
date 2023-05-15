@@ -49,7 +49,7 @@ jobs:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
           HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
       - name: Add Heroku remote
-        run: heroku git:remote --app last-lecture
+        run: heroku git:remote --app fit_restaurant
         env:
           HEROKU_APP_NAME: ${{ secrets.HEROKU_APP }}
       - name: Push to Heroku
